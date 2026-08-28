@@ -1,0 +1,22 @@
+# Local evidence copied from the original coursework archive.
+local-review/
+
+# Build outputs
+build/
+chat-server
+chat-client
+protocol-test
+*.o
+*.out
+*.exe
+
+# Runtime artifacts
+*.log
+core
+core.*
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
