@@ -1,31 +1,26 @@
 # Test Evidence
 
-실제 실행 후 아래 항목을 채웁니다. 실행하지 않은 결과는 PASS로 기록하지 않습니다.
+2026년 재구현을 GitHub Codespaces Linux 환경에서 독립적으로 빌드·실행했습니다.
 
 ## Environment
 
-- Date:
-- OS / distribution:
-- Compiler and version:
-- Python version:
-- Command: `make clean && make test`
+- Date: 2026-08-28
+- OS / distribution: GitHub Codespaces Linux
+- Compiler: `cc` (`-std=c11 -Wall -Wextra -Wpedantic -Werror`)
+- Python: Python 3 (`python3`)
+- Command: `make test`
 
 ## Results
 
 | Check | Result | Evidence |
 |---|---|---|
-| warning-free build with `-Werror` | 미실행 | |
-| `protocol_test` | 미실행 | |
-| three-client integration test | 미실행 | |
-| split command | 미실행 | |
-| coalesced commands | 미실행 | |
-| room isolation and broadcast | 미실행 | |
-| disconnect and SIGINT cleanup | 미실행 | |
+| warning-free build with `-Werror` | PASS | `make test` build stage |
+| `protocol_test` | PASS | `protocol test: PASS` |
+| three-client integration test | PASS | `integration test: PASS` |
+| split command | PASS | unit and integration test |
+| coalesced commands | PASS | unit and integration test |
+| room isolation and broadcast | PASS | integration test |
+| disconnect and SIGINT cleanup | PASS | integration test |
 
-## Screenshot
-
-저장 위치: `docs/images/network-tests.png`
-
-스크린샷에는 build command, warning 0개, `protocol test: PASS`,
-`integration test: PASS`가 식별 가능해야 합니다. 사용자명과 로컬 절대 경로는 포함하지
-않거나 잘라냅니다.
+저장소의 GitHub Actions workflow가 `make test`를 실행하므로 동일한 검증을 다시 확인할 수
+있습니다.

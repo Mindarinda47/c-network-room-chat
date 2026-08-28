@@ -20,3 +20,5 @@ core.*
 .idea/
 .DS_Store
 Thumbs.db
+PORTFOLIO_TODO.md
+docs/images/network-tests.png

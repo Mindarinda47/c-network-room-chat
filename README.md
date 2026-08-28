@@ -1,5 +1,7 @@
 # C Network Programming: Multi-client Room Chat
 
+[![Build and Test](https://github.com/Mindarinda47/c-network-room-chat/actions/workflows/test.yml/badge.svg)](https://github.com/Mindarinda47/c-network-room-chat/actions/workflows/test.yml)
+
 학부 컴퓨터네트워크 과제에서 경험한 TCP 소켓, 비동기 채팅, `fork`, `select` 구현을
 바탕으로 2026년에 프로토콜 경계와 연결 종료 처리를 다시 설계한 전공 기술 사례입니다.
 2023년 제출본과 2026년 재구현을 구분하며, 미완성 과제를 당시 완성작으로 표현하지
@@ -9,14 +11,14 @@
 
 | 해결 대상 | 2026년 구현 | 현재 검증 상태 |
 |---|---|---|
-| 여러 클라이언트 동시 처리 | 단일 `select` 이벤트 루프, 최대 15명 | 정적 검토 완료, Linux 실행 필요 |
-| 로비와 채팅방 | 방 3개, 방별 최대 5명, 입장·퇴장·브로드캐스트 | 독립 통합 테스트 준비 |
-| TCP 메시지 경계 | 클라이언트별 수신 버퍼와 줄 단위 framing | 분할·병합 단위 테스트 준비 |
-| 일부만 전송되는 `send` | `send_all` 반복 전송 | socket pair 단위 테스트 준비 |
-| 비동기 입력·수신 | 클라이언트에서 stdin과 socket을 `select`로 감시 | Linux 실행 필요 |
+| 여러 클라이언트 동시 처리 | 단일 `select` 이벤트 루프, 최대 15명 | 3-client Linux 통합 테스트 통과 |
+| 로비와 채팅방 | 방 3개, 방별 최대 5명, 입장·퇴장·브로드캐스트 | 방 격리·브로드캐스트 테스트 통과 |
+| TCP 메시지 경계 | 클라이언트별 수신 버퍼와 줄 단위 framing | 분할·병합 테스트 통과 |
+| 일부만 전송되는 `send` | `send_all` 반복 전송 | socket pair byte 비교 통과 |
+| 비동기 입력·수신 | 클라이언트에서 stdin과 socket을 `select`로 감시 | `-Werror` Linux build 통과 |
 
-> **현재 상태: 포트폴리오 재구성 중.** 이 작업 환경에는 Linux C toolchain이 없어
-> 빌드·실행 결과를 아직 저장소에 기록하지 않았습니다.
+> **현재 상태:** GitHub Codespaces Linux 환경에서 `make test`를 실행해 warning-free
+> build, protocol unit test와 3-client integration test 통과를 확인했습니다.
 
 ## 실행 구조
 
@@ -93,18 +95,11 @@ make test
 ./build/chat-client 127.0.0.1 12345
 ```
 
-### 테스트 실행 증거
+### 검증 결과
 
-스크린샷은 `docs/images/network-tests.png`에 저장합니다. 여러 장이면
-`network-tests-01.png`, `network-tests-02.png`처럼 순번을 붙입니다.
-
-> **스크린샷 삽입 위치 — 빌드 경고 0개와 두 테스트의 PASS 출력 추가 예정**
-
-<!-- 실제 실행 후 아래 주석을 해제합니다.
-![네트워크 서버 독립 테스트 실행 결과](docs/images/network-tests.png)
--->
-
-실제 환경과 결과는 [`docs/TEST_EVIDENCE.md`](docs/TEST_EVIDENCE.md)에 기록합니다.
+`make test`에서 `-Werror` build, protocol unit test와 3-client integration test가
+통과했습니다. 같은 명령은 GitHub Actions에서도 실행되며, 세부 검증 항목은
+[`docs/TEST_EVIDENCE.md`](docs/TEST_EVIDENCE.md)에 정리합니다.
 
 ## 현재 제한
 
@@ -119,7 +114,7 @@ output queue와 writable event 처리를 추가해야 합니다.
   `select` 다중 클라이언트 과제를 수행하고 실행 화면을 남김
 - 2023년: 최종 로비·다중 채팅 과제는 접속 초기 단계 이후 미완료
 - 2026년: 보존된 명세·제출 코드·실행 결과를 대조해 오류를 확인하고, 공개 가능한
-  독립 구조로 다시 구현 및 테스트 설계
+  독립 구조로 다시 구현한 뒤 Linux 독립 테스트 통과
 
 세부 판정은 [`docs/ORIGINAL_REVIEW.md`](docs/ORIGINAL_REVIEW.md)를 참조합니다.
 
@@ -131,6 +126,5 @@ output queue와 writable event 처리를 추가해야 합니다.
 제외되어 있습니다.
 
 - 공개 범위 및 저작권: [`docs/COPYRIGHT.md`](docs/COPYRIGHT.md)
-- 남은 수정과 검증: [`PORTFOLIO_TODO.md`](PORTFOLIO_TODO.md)
 - 변경 설명 기록: [`docs/CHANGE_RECORD.md`](docs/CHANGE_RECORD.md)
 - 심사위원용 사례 요약: [`docs/CASE_STUDY.md`](docs/CASE_STUDY.md)
