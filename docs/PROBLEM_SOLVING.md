@@ -8,7 +8,7 @@
 
 ## 증거 비교
 
-2026년 재검토에서 서버 원본과 클라이언트 수신 파일의 크기와 byte prefix를 비교했습니다.
+서버 원본과 클라이언트 수신 파일의 크기와 byte prefix를 비교했습니다.
 
 | 대상 | 원본 대비 결과 |
 |---|---|
@@ -51,4 +51,4 @@ payload length와 message type을 기록하고, 지정된 길이만 `recv_exact`
 - NUL byte가 포함된 payload를 socket pair로 전송하고 길이·내용 비교
 - 서버가 세 클라이언트의 방 입장·격리·브로드캐스트·퇴장을 처리하는지 확인
 
-실제 결과는 런타임 검증 후 [`TEST_EVIDENCE.md`](TEST_EVIDENCE.md)에 기록합니다.
+실제 실행 결과는 [`TEST_EVIDENCE.md`](TEST_EVIDENCE.md)에 기록했습니다.

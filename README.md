@@ -2,10 +2,9 @@
 
 [![Build and Test](https://github.com/Mindarinda47/c-network-room-chat/actions/workflows/test.yml/badge.svg)](https://github.com/Mindarinda47/c-network-room-chat/actions/workflows/test.yml)
 
-학부 컴퓨터네트워크 과제에서 경험한 TCP 소켓, 비동기 채팅, `fork`, `select` 구현을
-바탕으로 2026년에 프로토콜 경계와 연결 종료 처리를 다시 설계한 전공 기술 사례입니다.
-2023년 제출본과 2026년 재구현을 구분하며, 미완성 과제를 당시 완성작으로 표현하지
-않습니다.
+2023년 컴퓨터네트워크 과제에서 경험한 TCP 소켓과 `select`를 바탕으로, 2026년에
+TCP stream framing, partial send, 다중 클라이언트와 채팅방 상태를 독립 서버·클라이언트
+구조로 다시 구현한 전공 기술 사례입니다.
 
 ## 15초 요약
 
@@ -64,12 +63,12 @@ flowchart LR
 | 수신 조각 조립·분리 | [`protocol.c`](src/common/protocol.c) | [`protocol_test.c`](tests/protocol_test.c) |
 | partial send 처리 | [`chat_send_all`](src/common/protocol.c) | socket pair byte 비교 |
 | 다중 접속·방 상태 | [`server.c`](src/server/server.c) | [`integration_test.py`](tests/integration_test.py) |
-| 비동기 클라이언트 | [`client.c`](src/client/client.c) | 수동 실행 검증 예정 |
+| 비동기 클라이언트 | [`client.c`](src/client/client.c) | `-Werror` Linux build 통과 |
 
 ## 문제 발견과 보완
 
 2023년 멀티서비스 과제의 실행 결과에서는 파일 다운로드가 완료된 것처럼 보였습니다.
-2026년 재검토에서 송신 원본과 수신 파일을 비교하자 두 수신 파일 모두 원본 뒤에 정확히
+송신 원본과 수신 파일을 byte 단위로 비교하자 두 수신 파일 모두 원본 뒤에 정확히
 79바이트의 `EOF` 및 다음 메뉴 문자열이 추가되어 있었습니다. TCP가 `send` 단위의
 메시지 경계를 보존한다고 가정한 것이 원인이었습니다.
 
@@ -108,15 +107,9 @@ make test
 막을 수 있습니다. 실서비스로 확장할 때는 socket을 nonblocking으로 전환하고 client별
 output queue와 writable event 처리를 추가해야 합니다.
 
-## 2023년 경험과 2026년 재구현 구분
+## 학부 경험과 현재 구현
 
-- 2023년: AF_UNIX·AF_INET socket, 동기·비동기 채팅, `fork` Echo 서버,
-  `select` 다중 클라이언트 과제를 수행하고 실행 화면을 남김
-- 2023년: 최종 로비·다중 채팅 과제는 접속 초기 단계 이후 미완료
-- 2026년: 보존된 명세·제출 코드·실행 결과를 대조해 오류를 확인하고, 공개 가능한
-  독립 구조로 다시 구현한 뒤 Linux 독립 테스트 통과
-
-세부 판정은 [`docs/ORIGINAL_REVIEW.md`](docs/ORIGINAL_REVIEW.md)를 참조합니다.
+2023년 네트워크 과제에서 AF_UNIX·AF_INET socket, `fork`, `select`와 비동기 채팅 구조를 경험했습니다. 당시 최종 로비·채팅방 과제는 접속 초기 단계 이후 미완료였으며, 현재 저장소의 서버·클라이언트는 2026년에 TCP stream framing과 partial send 문제를 보완해 독립적으로 다시 구현한 결과입니다.
 
 ## 공개 범위
 
@@ -125,6 +118,6 @@ output queue와 writable event 처리를 추가해야 합니다.
 원본 화면 캡처는 포함하지 않습니다. 로컬 비교용 `local-review/`는 `.gitignore`로
 제외되어 있습니다.
 
-- 공개 범위 및 저작권: [`docs/COPYRIGHT.md`](docs/COPYRIGHT.md)
-- 변경 설명 기록: [`docs/CHANGE_RECORD.md`](docs/CHANGE_RECORD.md)
-- 심사위원용 사례 요약: [`docs/CASE_STUDY.md`](docs/CASE_STUDY.md)
+- 프로토콜 설계: [`docs/PROTOCOL.md`](docs/PROTOCOL.md)
+- 테스트 결과: [`docs/TEST_EVIDENCE.md`](docs/TEST_EVIDENCE.md)
+- 출처 및 공개 범위: [`docs/COPYRIGHT.md`](docs/COPYRIGHT.md)
