@@ -102,7 +102,7 @@ make test
 
 ## 현재 제한
 
-서버는 학부 전공 사례의 범위에 맞춰 blocking socket을 사용합니다. 따라서 메시지를 읽지
+서버는 blocking socket을 사용합니다. 따라서 메시지를 읽지
 않는 client의 송신 buffer가 가득 차면 `broadcast_room()`의 `send`가 event loop를 잠시
 막을 수 있습니다. 실서비스로 확장할 때는 socket을 nonblocking으로 전환하고 client별
 output queue와 writable event 처리를 추가해야 합니다.
@@ -110,14 +110,3 @@ output queue와 writable event 처리를 추가해야 합니다.
 ## 학부 경험과 현재 구현
 
 2023년 네트워크 과제에서 AF_UNIX·AF_INET socket, `fork`, `select`와 비동기 채팅 구조를 경험했습니다. 당시 최종 로비·채팅방 과제는 접속 초기 단계 이후 미완료였으며, 현재 저장소의 서버·클라이언트는 2026년에 TCP stream framing과 partial send 문제를 보완해 독립적으로 다시 구현한 결과입니다.
-
-## 공개 범위
-
-공개 저장소에는 이 README, 2026년 코드, 독립 테스트와 직접 작성한 설명만 포함합니다.
-교수 제공 PDF·DOCX·예제·테스트·배포 리소스, 개인정보 포함 보고서, ZIP, 실행 파일,
-원본 화면 캡처는 포함하지 않습니다. 로컬 비교용 `local-review/`는 `.gitignore`로
-제외되어 있습니다.
-
-- 프로토콜 설계: [`docs/PROTOCOL.md`](docs/PROTOCOL.md)
-- 테스트 결과: [`docs/TEST_EVIDENCE.md`](docs/TEST_EVIDENCE.md)
-- 출처 및 공개 범위: [`docs/COPYRIGHT.md`](docs/COPYRIGHT.md)
