@@ -21,5 +21,4 @@ make test
 ```
 
 The suite passed in GitHub Codespaces Linux with warning-free `-Werror` builds.
-The recorded environment and output are available in
-[`docs/TEST_EVIDENCE.md`](../docs/TEST_EVIDENCE.md).
+The same command runs in [GitHub Actions](../.github/workflows/test.yml).

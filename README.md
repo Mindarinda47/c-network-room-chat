@@ -8,7 +8,7 @@ TCP stream framing, partial send, 다중 클라이언트와 채팅방 상태를 
 
 ## 15초 요약
 
-| 해결 대상 | 2026년 구현 | 현재 검증 상태 |
+| 해결 대상 | 2026년 구현 | 확인 방법 |
 |---|---|---|
 | 여러 클라이언트 동시 처리 | 단일 `select` 이벤트 루프, 최대 15명 | 3-client Linux 통합 테스트 통과 |
 | 로비와 채팅방 | 방 3개, 방별 최대 5명, 입장·퇴장·브로드캐스트 | 방 격리·브로드캐스트 테스트 통과 |
@@ -94,11 +94,10 @@ make test
 ./build/chat-client 127.0.0.1 12345
 ```
 
-### 검증 결과
+### 테스트 결과
 
 `make test`에서 `-Werror` build, protocol unit test와 3-client integration test가
-통과했습니다. 같은 명령은 GitHub Actions에서도 실행되며, 세부 검증 항목은
-[`docs/TEST_EVIDENCE.md`](docs/TEST_EVIDENCE.md)에 정리합니다.
+통과했습니다. 같은 명령은 [GitHub Actions](.github/workflows/test.yml)에서도 실행됩니다.
 
 ## 현재 제한
 

@@ -51,4 +51,4 @@ payload length와 message type을 기록하고, 지정된 길이만 `recv_exact`
 - NUL byte가 포함된 payload를 socket pair로 전송하고 길이·내용 비교
 - 서버가 세 클라이언트의 방 입장·격리·브로드캐스트·퇴장을 처리하는지 확인
 
-실제 실행 결과는 [`TEST_EVIDENCE.md`](TEST_EVIDENCE.md)에 기록했습니다.
+관련 테스트 코드는 [`tests`](../tests)에서 확인할 수 있습니다.
